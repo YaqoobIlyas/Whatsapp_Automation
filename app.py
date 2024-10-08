@@ -1,9 +1,11 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS  # Import CORS
+from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app) 
-submitted_data = None  # Global variable to store submitted data
+CORS(app)
+
+# Using a dictionary to store data to handle multiple requests
+storage = {}
 
 @app.route('/')
 def index():
@@ -11,16 +13,18 @@ def index():
 
 @app.route('/submit', methods=['POST'])
 def submit_data():
-    global submitted_data  # Use the global keyword to modify the global variable
-    submitted_data = request.json  # Store the received data in the global variable
-    
-    print("Received data:", submitted_data)
-    return jsonify({"message": "Data received successfully!", "data": submitted_data}), 200
+    global storage  # Access the global dictionary
+    data_id = 'last_submitted_data'  # Key for storing the data
+    storage[data_id] = request.json  # Store the received data in the dictionary
+
+    print("Received data:", storage[data_id])
+    return jsonify({"message": "Data received successfully!", "data": storage[data_id]}), 200
 
 @app.route('/data', methods=['GET'])
 def get_data():
-    if submitted_data is not None:
-        return jsonify({"data": submitted_data}), 200  
+    data_id = 'last_submitted_data'  # Key to retrieve the data
+    if data_id in storage:
+        return jsonify({"data": storage[data_id]}), 200  
     else:
-        print("No routes have been called yet. No data received.")  
-        return jsonify({"message": "No data received yet."}), 404  
+        print("No data received yet.")  
+        return jsonify({"message": "No data received yet."}), 404
