@@ -5,6 +5,10 @@ app = Flask(__name__)
 CORS(app) 
 submitted_data = None
 
+@app.route('/')
+def index():
+    return "Welcome to the WhatsApp Automation API. Use /data to send a message."
+
 @app.route('/submit', methods=['POST'])
 def submit_data():
     global submitted_data  
@@ -22,6 +26,4 @@ def get_data():
         print("No routes have been called yet. No data received.")  
         return jsonify({"message": "No data received yet."}), 404  
 
-if __name__ == '__main__':
-    print("Server is running in local mode. Ready to accept requests!")  
-    app.run(debug=True)
+
