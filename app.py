@@ -3,7 +3,7 @@ from flask_cors import CORS  # Import CORS
 
 app = Flask(__name__)
 CORS(app) 
-submitted_data = None
+submitted_data = None  # Global variable to store submitted data
 
 @app.route('/')
 def index():
@@ -11,8 +11,9 @@ def index():
 
 @app.route('/submit', methods=['POST'])
 def submit_data():
-    submitted_data = request.json
- 
+    global submitted_data  # Use the global keyword to modify the global variable
+    submitted_data = request.json  # Store the received data in the global variable
+    
     print("Received data:", submitted_data)
     return jsonify({"message": "Data received successfully!", "data": submitted_data}), 200
 
@@ -23,7 +24,3 @@ def get_data():
     else:
         print("No routes have been called yet. No data received.")  
         return jsonify({"message": "No data received yet."}), 404  
-
-if __name__ == '__main__':
-    print("Server is running in local mode. Ready to accept requests!")  
-    app.run(debug=True)
