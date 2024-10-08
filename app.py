@@ -11,8 +11,6 @@ def index():
 
 @app.route('/submit', methods=['POST'])
 def submit_data():
-    global submitted_data  
- 
     submitted_data = request.json
  
     print("Received data:", submitted_data)
@@ -26,4 +24,6 @@ def get_data():
         print("No routes have been called yet. No data received.")  
         return jsonify({"message": "No data received yet."}), 404  
 
-
+if __name__ == '__main__':
+    print("Server is running in local mode. Ready to accept requests!")  
+    app.run(debug=True)
