@@ -4,8 +4,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-# Using a dictionary to store data to handle multiple requests
-storage = {}
+storage = None
 
 @app.route('/')
 def index():
@@ -13,18 +12,20 @@ def index():
 
 @app.route('/submit', methods=['POST'])
 def submit_data():
-    global storage  # Access the global dictionary
-    data_id = 'last_submitted_data'  # Key for storing the data
-    storage[data_id] = request.json  # Store the received data in the dictionary
+    global storage  
+    storage = request.json  # Store the incoming data
 
-    print("Received data:", storage[data_id])
-    return jsonify({"message": "Data received successfully!", "data": storage[data_id]}), 200
+    print("Received data:", storage)
+    return jsonify({"message": "Data received successfully!", "data": storage}), 200
 
 @app.route('/data', methods=['GET'])
 def get_data():
-    data_id = 'last_submitted_data'  # Key to retrieve the data
-    if data_id in storage:
-        return jsonify({"data": storage[data_id]}), 200  
+    global storage  # Use the global storage variable
+
+    if storage is not None:
+        data_to_return = storage  # Save the current data to return to the requester
+        storage = None  # Reset the storage so the data is not available for the next request
+        return jsonify({"data": data_to_return}), 200  
     else:
         print("No data received yet.")  
         return jsonify({"message": "No data received yet."}), 404
