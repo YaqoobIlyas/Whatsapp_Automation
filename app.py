@@ -11,6 +11,7 @@ print("hi there:  ",SECRET_KEYs)
 storage = None
 
 def verify_jwt(token):
+    print("inside verify_jwt:   ",SECRET_KEYs)
     try:
         decoded = jwt.decode(token, SECRET_KEYs, algorithms=['HS256'])
         return decoded
