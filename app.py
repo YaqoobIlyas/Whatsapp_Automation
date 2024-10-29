@@ -14,8 +14,13 @@ def verify_jwt(token):
     try:
         decoded = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
         return decoded
-    except jwt.InvalidTokenError:
+    except jwt.ExpiredSignatureError:
+        print("JWT token has expired.")
         return None
+    except jwt.InvalidTokenError as e:
+        print("JWT Error:", e)
+        return None
+
 
 def validate_phone_number(phone_number):
 
