@@ -6,7 +6,7 @@ import os
 
 app = Flask(__name__)
 CORS(app)
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 storage = None
 
 def verify_jwt(token):
@@ -71,5 +71,4 @@ def get_data():
     else:
         print("No data received yet.")
         return jsonify({"message": "No data received yet."}), 404
-
 
