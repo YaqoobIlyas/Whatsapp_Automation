@@ -7,6 +7,7 @@ import os
 app = Flask(__name__)
 CORS(app)
 SECRET_KEY = os.environ.get('SECRET_KEY')
+print("hi there:  ",SECRET_KEY)
 storage = None
 
 def verify_jwt(token):
