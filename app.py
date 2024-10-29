@@ -72,5 +72,4 @@ def get_data():
         print("No data received yet.")
         return jsonify({"message": "No data received yet."}), 404
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
