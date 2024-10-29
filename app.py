@@ -44,6 +44,7 @@ def submit_data():
 
     # Extract the actual token part
     token = token.split(" ")[1]
+    print(token)
     decoded_token = verify_jwt(token)
     print("Decoded Token:", decoded_token)  # Debug print for decoded token
 
