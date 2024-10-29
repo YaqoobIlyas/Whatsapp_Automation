@@ -7,11 +7,9 @@ import os
 app = Flask(__name__)
 CORS(app)
 SECRET_KEYs = os.environ.get('SECRET_KEY')
-print("hi there:  ",SECRET_KEYs)
 storage = None
 
 def verify_jwt(token):
-    print("inside verify_jwt:   ",SECRET_KEYs)
     try:
         decoded = jwt.decode(token, SECRET_KEYs, algorithms=['HS256'])
         return decoded
@@ -38,26 +36,19 @@ def submit_data():
     global storage
 
     token = request.headers.get('Authorization')
-    print("Authorization Header:", token)  # Debug print for token
 
     if not token or not token.startswith('Bearer '):
         return jsonify({"message": "Missing or invalid token!"}), 401
 
-    # Extract the actual token part
     token = token.split(" ")[1]
-    print(token)
     decoded_token = verify_jwt(token)
-    print("Decoded Token:", decoded_token)  # Debug print for decoded token
-
     if not decoded_token:
         return jsonify({"message": "Unauthorized access!"}), 401
 
-    # Get JSON data from the request
     incoming_data = request.json
     if not incoming_data:
         return jsonify({"message": "No data provided!"}), 400
 
-    # Validate the phone number and message
     phone_number = incoming_data.get("phone_number")
     message = incoming_data.get("message")
 
@@ -68,10 +59,9 @@ def submit_data():
     if not validated_phone_number:
         return jsonify({"message": "Invalid phone number. It must be exactly 10 digits!"}), 400
 
-    # Save the validated data to storage
     storage = {"phone_number": validated_phone_number, "message": message}
-    print("Received data:", storage)
-    return jsonify({"message": "Data received successfully!", "data": storage}), 200
+    
+    return jsonify({"message": "Data pushed"}), 200
 
 @app.route('/data', methods=['GET'])
 def get_data():
