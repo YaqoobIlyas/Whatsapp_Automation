@@ -32,11 +32,16 @@ def submit_data():
     global storage
 
     token = request.headers.get('Authorization')
+    print("Authorization Header:", token)  # Debug print for token
+
     if not token or not token.startswith('Bearer '):
         return jsonify({"message": "Missing or invalid token!"}), 401
 
+    # Extract the actual token part
+    token = token.split(" ")[1]
+    decoded_token = verify_jwt(token)
+    print("Decoded Token:", decoded_token)  # Debug print for decoded token
 
-    decoded_token = verify_jwt(token.split(" ")[1])
     if not decoded_token:
         return jsonify({"message": "Unauthorized access!"}), 401
 
