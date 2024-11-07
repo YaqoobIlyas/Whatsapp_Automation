@@ -35,15 +35,15 @@ def index():
 def submit_data():
     global storage
 
-    token = request.headers.get('Authorization')
+    #token = request.headers.get('Authorization')
 
-    if not token or not token.startswith('Bearer '):
-        return jsonify({"message": "Missing or invalid token!"}), 401
+    #if not token or not token.startswith('Bearer '):
+     #   return jsonify({"message": "Missing or invalid token!"}), 401
 
-    token = token.split(" ")[1]
-    decoded_token = verify_jwt(token)
-    if not decoded_token:
-        return jsonify({"message": "Unauthorized access!"}), 401
+   # token = token.split(" ")[1]
+   # decoded_token = verify_jwt(token)
+   # if not decoded_token:
+   #     return jsonify({"message": "Unauthorized access!"}), 401
 
     incoming_data = request.json
     if not incoming_data:
